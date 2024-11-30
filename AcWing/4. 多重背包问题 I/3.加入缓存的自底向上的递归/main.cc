@@ -317,27 +317,41 @@ signed main()
     std::cout.tie(nullptr);
     int n,v;
     cin>>n>>v;
-    vector<int> weights,values;
-    weights.push_back(0);
-    values.push_back(0);
+    vector<int> weights(n+1,0),values(n+1,0),amounts(n+1,0);
     for(int i=1;i<=n;i++){
-        int a,b,c;
-        cin>>a>>b>>c;
-        for(int j=0;j<c;j++){
-            weights.push_back(a);
-            values.push_back(b);
-        }
+        cin>>weights[i]>>values[i]>>amounts[i];
     }
-    vector<vector<int>> dp(weights.size()+10,vector<int>(105,0));
-    for(int i=1;i<weights.size();i++){
-        for(int j=0;j<=v;j++){
-            dp[i][j] = dp[i-1][j];
-            if(j>=weights[i]){
-                dp[i][j] = max(dp[i][j],values[i]+dp[i-1][j-weights[i]]);
+    unordered_map<int,unordered_map<int,unordered_map<int,int>>> map1;
+    function<int(int,int)> dfs  = [&dfs,&weights,&values,&amounts,&n,&map1](int index,int v){
+        if(index>n||v==0){
+            return 0;
+        }
+        if(map1.find(index)!=map1.end()){
+            if(map1[index].find(v)!=map1[index].end()){
+                if(map1[index][v].find(amounts[index])!=map1[index][v].end()){
+                    return map1[index][v][amounts[index]];
+                }
             }
         }
-    }
-    cout<<dp[weights.size()-1][v]<<endl;
+        int ans = dfs(index+1,v);
+        if(amounts[index]>0){
+            if(v-weights[index]>=0){
+                {
+                    amounts[index]--;
+                    ans = max(values[index]+dfs(index+1,v-weights[index]),ans);
+                    amounts[index]++;
+                }
+                {
+                    amounts[index]--;
+                    ans = max(values[index]+dfs(index,v-weights[index]),ans);
+                    amounts[index]++;
+                }
+            }
+        }
+        map1[index][v][amounts[index]] = ans;
+        return ans;
+    };
+    cout<<dfs(1,v)<<endl;
     return 0;
 }
 

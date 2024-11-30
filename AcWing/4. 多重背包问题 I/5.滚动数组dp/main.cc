@@ -328,16 +328,19 @@ signed main()
             values.push_back(b);
         }
     }
-    vector<vector<int>> dp(weights.size()+10,vector<int>(105,0));
+    vector<int> pre(105,0),cur(105,0);
     for(int i=1;i<weights.size();i++){
         for(int j=0;j<=v;j++){
-            dp[i][j] = dp[i-1][j];
+            cur[j] = pre[j];
             if(j>=weights[i]){
-                dp[i][j] = max(dp[i][j],values[i]+dp[i-1][j-weights[i]]);
+                cur[j] = max(pre[j],values[i]+pre[j-weights[i]]);
             }
         }
+        for (int j = 0; j <= v; j++) {
+            pre[j] = cur[j];
+        }
     }
-    cout<<dp[weights.size()-1][v]<<endl;
+    cout<<pre[v]<<endl;
     return 0;
 }
 

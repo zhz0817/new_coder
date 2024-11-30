@@ -328,16 +328,13 @@ signed main()
             values.push_back(b);
         }
     }
-    vector<vector<int>> dp(weights.size()+10,vector<int>(105,0));
+    vector<int> dp(105,0);
     for(int i=1;i<weights.size();i++){
-        for(int j=0;j<=v;j++){
-            dp[i][j] = dp[i-1][j];
-            if(j>=weights[i]){
-                dp[i][j] = max(dp[i][j],values[i]+dp[i-1][j-weights[i]]);
-            }
+        for(int j=v;j>=weights[i];j--){
+            dp[j] = max(dp[j],values[i]+dp[j-weights[i]]);
         }
     }
-    cout<<dp[weights.size()-1][v]<<endl;
+    cout<<dp[v]<<endl;
     return 0;
 }
 
