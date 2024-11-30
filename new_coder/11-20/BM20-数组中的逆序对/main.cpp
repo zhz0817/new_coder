@@ -21,7 +21,7 @@ public:
         while(i<=mid&&j<=right){
             if(nums[i]<nums[j]){
                 tmp[index++]=nums[i++];
-            }else{ //后面大于前面，是逆序对
+            }else{ //后面小于前面，是逆序对
                 tmp[index++]=nums[j++];
                 ans+=mid-i+1;//逆序对个数mid-i+1
                 ans%=mod;
