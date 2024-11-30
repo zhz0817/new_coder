@@ -323,13 +323,23 @@ signed main()
     }
 
 //    vector<vector<int>> dp(1005,vector<int>(1005,0));
-    vector<int> dp(1005,0);
+    vector<int> pre(1005,0),cur(1005,0);
     for(int i=1;i<=n;i++){
-        for(int j=v;j>=weights[i];j--){
-            dp[j] = max(dp[j],values[i]+dp[j-weights[i]]);
+//        for(int j=v;j>=weights[i];j--){
+//            cur[j] = max(pre[j],values[i]+pre[j-weights[i]]);
+//        }
+        for(int j=0;j<=v;j++){
+            cur[j] = pre[j];
+            if(j>=weights[i]){
+                cur[j] = max(pre[j],values[i]+pre[j-weights[i]]);
+                cur[j] = max(cur[j],values[i]+cur[j-weights[i]]);
+            }
+        }
+        for (int j = 0; j <= v; j++) {
+            pre[j] = cur[j];
         }
     }
-    cout<<dp[v]<<endl;
+    cout<<pre[v]<<endl;
     return 0;
 }
 

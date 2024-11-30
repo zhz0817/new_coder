@@ -322,14 +322,17 @@ signed main()
         cin>>weights[i]>>values[i];
     }
 
-//    vector<vector<int>> dp(1005,vector<int>(1005,0));
-    vector<int> dp(1005,0);
+    vector<vector<int>> dp(1005,vector<int>(1005,0));
     for(int i=1;i<=n;i++){
-        for(int j=v;j>=weights[i];j--){
-            dp[j] = max(dp[j],values[i]+dp[j-weights[i]]);
+        for(int j=0;j<=v;j++){
+            dp[i][j] = dp[i-1][j];
+            if(j>=weights[i]){
+                dp[i][j] = max(dp[i][j],values[i]+dp[i-1][j-weights[i]]);
+                dp[i][j] = max(dp[i][j],values[i]+dp[i][j-weights[i]]);
+            }
         }
     }
-    cout<<dp[v]<<endl;
+    cout<<dp[n][v]<<endl;
     return 0;
 }
 

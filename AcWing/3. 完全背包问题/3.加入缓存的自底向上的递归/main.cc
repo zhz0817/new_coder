@@ -321,15 +321,23 @@ signed main()
     for(int i=1;i<=n;i++){
         cin>>weights[i]>>values[i];
     }
-
-//    vector<vector<int>> dp(1005,vector<int>(1005,0));
-    vector<int> dp(1005,0);
-    for(int i=1;i<=n;i++){
-        for(int j=v;j>=weights[i];j--){
-            dp[j] = max(dp[j],values[i]+dp[j-weights[i]]);
+    vector<vector<int>> cache(n+10,vector<int>(v+10,-1));
+    function<int(int,int)> dfs  = [&dfs,&weights,&values,&n,&cache](int index,int v){
+        if(index>n||v==0){
+            return 0;
         }
-    }
-    cout<<dp[v]<<endl;
+        if(cache[index][v]!=-1){
+            return cache[index][v];
+        }
+        int ans = dfs(index+1,v);
+        if(v-weights[index]>=0){
+            ans = max(values[index]+dfs(index+1,v-weights[index]),ans);
+            ans = max(values[index]+dfs(index,v-weights[index]),ans);
+        }
+        cache[index][v] = ans;
+        return ans;
+    };
+    cout<<dfs(1,v)<<endl;
     return 0;
 }
 

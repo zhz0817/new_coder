@@ -325,7 +325,7 @@ signed main()
 //    vector<vector<int>> dp(1005,vector<int>(1005,0));
     vector<int> dp(1005,0);
     for(int i=1;i<=n;i++){
-        for(int j=v;j>=weights[i];j--){
+        for(int j=weights[i];j<=v;j++){
             dp[j] = max(dp[j],values[i]+dp[j-weights[i]]);
         }
     }
