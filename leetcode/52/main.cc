@@ -2,7 +2,7 @@ class Solution {
 public:
     int ans = 0;
     int n;
-    int isVisitedY[100],isVisitedK1[100],isVisitedK2[100];//y轴，主对角线，副对角线
+    int isVisitedY[100],isVisitedK1[100],isVisitedK2[100];//y轴，副对角线，主对角线
     void dfs(int x){
         if(x>n){
             ans++;
