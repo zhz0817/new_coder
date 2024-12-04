@@ -1,3 +1,4 @@
+// 检查棋盘方格颜色是否相同
 class Solution {
 public:
     int getColor(int a,int b){
