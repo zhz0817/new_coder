@@ -6,52 +6,51 @@ using namespace std;
 #define FOR_DEC(i, start, end) for (int i = start; i > end; --i)
 #define FOR_INC_EQUAL(i, start, end) for (int i = start; i <= end; ++i)
 #define FOR_DEC_EQUAL(i, start, end) for (int i = start; i >= end; --i)
-//#define int long long
+// #define int long long
 
-void getNums(string s){
+void getNums(string s) {
     string t;
-    for(char ch:s){
-        if(ch=='['){
-            t+='{';
-        }else if(ch==']'){
-            t+='}';
-        }else{
-            t+=ch;
+    for (char ch : s) {
+        if (ch == '[') {
+            t += '{';
+        } else if (ch == ']') {
+            t += '}';
+        } else {
+            t += ch;
         }
     }
-    cout<<t<<endl;
+    cout << t << endl;
 }
 
-template <class T> class FenwickTree {
+template <class T>
+class FenwickTree {
     int limit;
     vector<T> arr;
 
     int lowbit(int x) { return x & (-x); }
 
-public:
+   public:
     FenwickTree(int limit) {
         this->limit = limit;
         arr = vector<T>(limit + 1);
     }
 
     void update(int idx, T delta) {
-        for (; idx <= limit; idx += lowbit(idx))
-            arr[idx] += delta;
+        for (; idx <= limit; idx += lowbit(idx)) arr[idx] += delta;
     }
 
     T query(int idx) {
         T ans = 0;
-        for (; idx > 0; idx -= lowbit(idx))
-            ans += arr[idx];
+        for (; idx > 0; idx -= lowbit(idx)) ans += arr[idx];
         return ans;
     }
 };
 
-
 class UnionFind {
     std::vector<int> root;
     std::vector<int> rank;
-public:
+
+   public:
     explicit UnionFind(int size) {
         root.resize(size);
         rank.resize(size);
@@ -61,8 +60,7 @@ public:
     }
 
     int find(int x) {
-        if (x == root[x])
-            return x;
+        if (x == root[x]) return x;
         return root[x] = find(root[x]);
     }
 
@@ -81,42 +79,39 @@ public:
         }
     }
 
-    bool isConnected(int x, int y) {
-        return find(x) == find(y);
-    }
+    bool isConnected(int x, int y) { return find(x) == find(y); }
 };
 
-
-class KMP{
-private:
+class KMP {
+   private:
     vector<vector<int>> dp;
     string pat_;
     int size = 128;
 
-public:
-    KMP(const string& pat){
+   public:
+    KMP(const string& pat) {
         this->pat_ = pat;
         int n = pat.length();
-        dp.resize(n,vector<int>(size,0));
-        dp[0][pat[0]]=1;
+        dp.resize(n, vector<int>(size, 0));
+        dp[0][pat[0]] = 1;
         int pre = 0;
-        for(int j=1;j<n;j++){
-            for(int c=0;c<size;c++){
+        for (int j = 1; j < n; j++) {
+            for (int c = 0; c < size; c++) {
                 dp[j][c] = dp[pre][c];
             }
-            dp[j][pat[j]]=j+1;
+            dp[j][pat[j]] = j + 1;
             pre = dp[pre][pat[j]];
         }
     }
 
-    int search(const string& txt){
+    int search(const string& txt) {
         int M = pat_.size();
         int N = txt.size();
         int j = 0;
-        for(int i=0;i<N;i++){
+        for (int i = 0; i < N; i++) {
             j = dp[j][txt[i]];
-            if(j==M){
-                return i-M+1;
+            if (j == M) {
+                return i - M + 1;
             }
         }
         return -1;
@@ -124,33 +119,31 @@ public:
 };
 struct ListNode {
     int val;
-    struct ListNode *next;
+    struct ListNode* next;
     ListNode(int x) : val(x), next(nullptr) {}
 };
 
-class Trie{
-public:
+class Trie {
+   public:
     vector<Trie*> children;
     vector<int> indexs_;
-    Trie(){
-        children.resize(26, nullptr);
-    }
+    Trie() { children.resize(26, nullptr); }
 
-    void insert(string s,int pos,int f){
+    void insert(string s, int pos, int f) {
         auto root = this;
-        if(f==0){
-            for(int i=0;i<s.size();i++){
-                int index = s[i]-'a';
-                if(root->children[index]== nullptr){
+        if (f == 0) {
+            for (int i = 0; i < s.size(); i++) {
+                int index = s[i] - 'a';
+                if (root->children[index] == nullptr) {
                     root->children[index] = new Trie();
                 }
                 root = root->children[index];
                 root->indexs_.push_back(pos);
             }
-        }else{
-            for(int i=s.size()-1;i>=0;i--){
-                int index = s[i]-'a';
-                if(root->children[index]== nullptr){
+        } else {
+            for (int i = s.size() - 1; i >= 0; i--) {
+                int index = s[i] - 'a';
+                if (root->children[index] == nullptr) {
                     root->children[index] = new Trie();
                 }
                 root = root->children[index];
@@ -159,12 +152,11 @@ public:
         }
     }
 
-
-    Trie* find(string s){
+    Trie* find(string s) {
         auto root = this;
-        for(int i=0;i<s.size();i++){
-            int index = s[i]-'a';
-            if(root->children[index]== nullptr){
+        for (int i = 0; i < s.size(); i++) {
+            int index = s[i] - 'a';
+            if (root->children[index] == nullptr) {
                 return nullptr;
             }
             root = root->children[index];
@@ -181,17 +173,15 @@ public:
     }
 };
 
-
-
-bool isPrime(int n){
-    if(n<=2){
+bool isPrime(int n) {
+    if (n <= 2) {
         return true;
     }
-    if(n%2==0){
+    if (n % 2 == 0) {
         return false;
     }
-    for(int i=3;i<= sqrt(n);i+=2){
-        if(n%i==0){
+    for (int i = 3; i <= sqrt(n); i += 2) {
+        if (n % i == 0) {
             return false;
         }
     }
@@ -199,7 +189,7 @@ bool isPrime(int n){
 }
 
 class SegmentTree {
-public:
+   public:
     SegmentTree(vector<int>& data) {
         n = data.size();
         tree.resize(2 * n);
@@ -208,7 +198,7 @@ public:
 
     void update(int index, int value) {
         int pos = index + n;
-        tree[pos] += value; // 增加操作
+        tree[pos] += value;  // 增加操作
         while (pos > 1) {
             pos /= 2;
             tree[pos] = max(tree[pos * 2], tree[pos * 2 + 1]);
@@ -234,7 +224,7 @@ public:
         return max_value;
     }
 
-private:
+   private:
     int n;
     vector<int> tree;
 
@@ -248,51 +238,48 @@ private:
     }
 };
 
-
-static const auto io_sync_off = []()
-{
+static const auto io_sync_off = []() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
     return nullptr;
 }();
 
 class Solution {
-public:
-
+   public:
 };
 
 const int NN = 114514;
-signed main(){
-//    Solution s;
-//    vector<vector<int>> grid{{1,1}};
-//    vector<int> nums1{2,3,2};
-//    vector<int> nums2{0,1,2,3};
-//    vector<string> ss = {"rook"};
+signed main() {
+    //    Solution s;
+    //    vector<vector<int>> grid{{1,1}};
+    //    vector<int> nums1{2,3,2};
+    //    vector<int> nums2{0,1,2,3};
+    //    vector<string> ss = {"rook"};
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
     std::cout.tie(nullptr);
-    int N,V,M;//数量、最大容量、最大重量
-    cin>>N>>V>>M;
-    vector<int> volumn(NN,0);//体积
-    vector<int> weights(NN,0);//重量
-    vector<int> values(NN,0);//价值
-    FOR_INC_EQUAL(i, 1, N){
-        cin>>volumn[i]>>weights[i]>>values[i];
-    }
+    int N, V, M;  // 数量、最大容量、最大重量
+    cin >> N >> V >> M;
+    vector<int> volumn(NN, 0);   // 体积
+    vector<int> weights(NN, 0);  // 重量
+    vector<int> values(NN, 0);   // 价值
+    FOR_INC_EQUAL(i, 1, N) { cin >> volumn[i] >> weights[i] >> values[i]; }
     int ans = 0;
 
-    function<void(int,int,int,int)> dfs = [&dfs,&N,&ans,&volumn,&weights,&values](int index,int count,
-                int v,int m) -> void {
-        if(index>N){
-            ans = max(ans,count);
+    function<void(int, int, int, int)> dfs = [&dfs, &N, &ans, &volumn, &weights,
+                                              &values](int index, int count,
+                                                       int v, int m) -> void {
+        if (index > N || v <= 0 || m <= 0) {
+            ans = max(ans, count);
             return;
         }
-        if(v>=volumn[index]&&m>=weights[index]){
-            dfs(index+1,count+values[index],v-volumn[index],m-weights[index]);
+        if (v >= volumn[index] && m >= weights[index]) {
+            dfs(index + 1, count + values[index], v - volumn[index],
+                m - weights[index]);
         }
-        dfs(index+1,count,v,m);
+        dfs(index + 1, count, v, m);
     };
-    dfs(1,0,V,M);
-    cout<<ans<<endl;
+    dfs(1, 0, V, M);
+    cout << ans << endl;
     return 0;
 }
