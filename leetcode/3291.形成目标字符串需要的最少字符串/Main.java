@@ -45,9 +45,7 @@ class Solution {
             trie.insert(word);
         }
         for (int i = 0; i < n; i++) { // 向后搜索的动态规划
-            if (dp[i]
-                == Integer
-                    .MAX_VALUE) { // 因为是向后搜索，如果还是最大int说明无法到达
+            if (dp[i]== Integer.MAX_VALUE) { // 因为是向后搜索，如果还是最大int说明无法到达
                 continue;
             }
             List<Integer> res = trie.search(target, i);
