@@ -23,7 +23,7 @@ class Solution {
             int pos) { // 以pos为起点下标，搜索并存储s字符串被字典树存储过的长度
             var node = this;
             List<Integer> ans = new ArrayList<>();
-            for (int i = pos; i < s.length(); i++) {
+            for (int i = pos; i < s.length(); i++) {//pos之前还没取到，所以不从pos+1开始
                 int index = s.charAt(i) - 'a';
                 if (node.children[index] == null) {
                     break; // 没有被字典树存储，打破循环
@@ -48,7 +48,7 @@ class Solution {
             if (dp[i]== Integer.MAX_VALUE) { // 因为是向后搜索，如果还是最大int说明无法到达
                 continue;
             }
-            List<Integer> res = trie.search(target, i);
+            List<Integer> res = trie.search(target, i);//dp[i]中，因为是向后搜索，没有事先计算，所以也要算dp[i+0]也就是dp[i]。传参的这个i也要带入计算
             for (Integer len : res) { // 更新dp
                 dp[i + len] = Math.min(dp[i + len], dp[i] + 1);
             }
