@@ -1,0 +1,51 @@
+struct Node {
+    Node* son[26]{};
+    Node* fail; // 当 cur.son[i] 不能匹配 target 中的某个字符时，cur.fail.son[i] 即为下一个待匹配节点（等于 root 则表示没有匹配）
+    int len; // 从根到 node 的字符串的长度，也是 node 在 trie 中的深度
+
+    Node(int len) : len(len) {}
+};
+
+struct AhoCorasick {
+    Node* root = new Node(0);
+
+    void put(string& s) { //普通的字典树
+        auto cur = root;
+        for (char b : s) {
+            b -= 'a';
+            if (cur->son[b] == nullptr) {
+                cur->son[b] = new Node(cur->len + 1);
+            }
+            cur = cur->son[b];
+        }
+    }
+
+    void build_fail() {
+        root->fail = root;
+        queue<Node*> q;
+        for (auto& son : root->son) {
+            if (son == nullptr) {
+                son = root;//方便失配时直接跳到下一个可能匹配的位置
+            } else {
+                son->fail = root; // 第一层的失配指针，都指向根节点 ∅
+                q.push(son);
+            }
+        }
+        // BFS
+        while (!q.empty()) {
+            auto cur = q.front();
+            q.pop();
+            for (int i = 0; i < 26; i++) {
+                auto& son = cur->son[i];
+                if (son == nullptr) {
+                    // 虚拟子节点 cur.son[i]，和 cur.fail.son[i] 是同一个
+                    // 方便失配时直接跳到下一个可能匹配的位置（但不一定是某个 words[k] 的最后一个字母）
+                    son = cur->fail->son[i];
+                }else{
+                    son->fail = cur->fail->son[i]; // 计算失配位置
+                    q.push(son);
+                }
+            }
+        }
+    }
+};
