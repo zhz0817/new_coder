@@ -240,18 +240,18 @@ public:
 
     vector<int> occurrencesOfElement(vector<int>& nums, vector<int>& queries,
                                      int x) {
-        vector<int> cache;
-        vector<int> ans(queries.size(), -1);
-        int index = 0;
+        vector<int> cache;//缓存，记录出现的第i个元素的下标
+        vector<int> ans(queries.size(), -1);//初始化大小是queries.size()，每个值都是-1
+        int index = 0;//遍历nums使用的下标
         for (int i = 0; i < queries.size(); ++i) {
-            while (index < nums.size() && cache.size() < queries[i]) {
+            while (index < nums.size() && cache.size() < queries[i]) { //为什么不先遍历完nums呢？因为可能会有多余的遍历造成时间浪费
                 if (nums[index] == x) {
-                    cache.push_back(index);
+                    cache.push_back(index);//所以需要几个就遍历几个
                 }
                 index++;
             }
             if (cache.size() >= queries[i]) {
-                ans[i] = cache[queries[i] - 1];
+                ans[i] = cache[queries[i] - 1];//注意queries是从1开始的，和下标对应要-1
             }
         }
         return ans;
