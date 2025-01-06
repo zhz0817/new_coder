@@ -242,7 +242,8 @@ public:
 class SegmentTreeDynamic{
 public:
     struct Node{
-        int val = false, lazy = false;
+        int val = 0;
+        bool lazy = false;
         Node *left, *right;
         Node():val(0), lazy(false), left(nullptr), right(nullptr) {}
     };
