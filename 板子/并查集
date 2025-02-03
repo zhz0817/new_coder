@@ -1,0 +1,44 @@
+template<typename T>
+class UnionFind {
+    std::vector<T> root;  // 根节点数组
+    std::vector<int> rank; // 秩数组（固定为int类型）
+
+public:
+    // 构造函数显式接受size_t类型参数
+    explicit UnionFind(size_t size) {
+
+        root.resize(size);
+        rank.resize(size, 1); // 秩初始化为1
+
+        for (T i = 0; i < size; ++i) {
+            root[i] = i;
+        }
+    }
+
+    // 路径压缩查找
+    T find(T x) {
+        return (x == root[x]) ? x : (root[x] = find(root[x]));
+    }
+
+    // 按秩合并（优化交换逻辑）
+    void connect(T x, T y) {
+        T rootX = find(x);
+        T rootY = find(y);
+
+        if (rootX == rootY) return;
+
+        // 总是将小树合并到大树
+        if (rank[rootX] < rank[rootY]) {
+            root[rootX] = rootY;
+        } else if (rank[rootX] > rank[rootY]) {
+            root[rootY] = rootX;
+        } else {
+            root[rootY] = rootX;
+            rank[rootX]++;
+        }
+    }
+
+    bool isConnected(T x, T y) {
+        return find(x) == find(y);
+    }
+};
