@@ -1,0 +1,27 @@
+template<typename T>
+class Fenwick {
+public:
+    vector<T> f;
+    Fenwick(vector<T> &nums) : f(nums.size() + 1) {
+        int n = nums.size();
+        for (int i = 0; i < n; ++i) {
+            add(i + 1, nums[i]);
+        }
+    }
+
+    static int lowBit(int n) { return n & -n; }
+
+    void add(int i, T val) {
+        for (; i < f.size(); i += lowBit(i)) {
+            f[i] += val;
+        }
+    }
+
+    T query(int i) {
+        T res = T();
+        for (; i > 0; i -= lowBit(i)) {
+            res += f[i];
+        }
+        return res;
+    }
+};
