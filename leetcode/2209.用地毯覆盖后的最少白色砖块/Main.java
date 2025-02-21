@@ -17,9 +17,6 @@ class Solution {
                     dp[i][j] = Math.min(dp[i][j],1+dp[i-1][j]);
                 }else{
                     dp[i][j] = Math.min(dp[i][j],dp[i-1][j]);
-                    if(j>=1){
-                        dp[i][j] = Math.min(dp[i][j],dp[i][j-1]);
-                    }
                 }
                 if( i-carpetLen>0 && j>=1){ //滑动窗口
                     dp[i][j] = Math.min(dp[i][j],dp[i-carpetLen][j-1]);
