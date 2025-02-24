@@ -7,7 +7,7 @@ public:
     int n;
     vector<string> ss;
     OrderedStream(int n) {
-        ss.resize(n+1, "");
+        ss.resize(n+1, "");//初始化vector
         this-> n = n;
     }
 
@@ -18,12 +18,12 @@ public:
         }
         vector<string> ans;
         ans.push_back(ss[ptr]);
-        int last = ptr;
+        int last = ptr;//记录最后一个连续序列的索引
         for(int i=ptr+1;i<=n;i++){
             if(!ss[i].empty()){
                 last = i;
                 ans.push_back(ss[i]);
-            }else{
+            }else{ //要求是连续的递增序列，如果不连续了就终止
                 break;
             }
         }
