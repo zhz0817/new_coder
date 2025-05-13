@@ -386,7 +386,7 @@ class Util {
         return t;
     }
 
-    static ll quick_pow(ll m, ll k, ll p) {  // 矩阵快速幂
+    static ll quick_pow(ll m, ll k, ll p) {  // 快速幂
         // quick_pow(2, 1012, MOD) 2的2012次方，对MOD取模
         ll t = m, res = 1;
         while (k) {
